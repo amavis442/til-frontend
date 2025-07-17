@@ -24,8 +24,10 @@
   }
 </script>
 
-<div class="grid w-1/2">
-  <h1 class="text-3xl font-bold mb-4">📚 Today I Learned</h1>
+<div class="flex flex-col gap-2 w-1/2">
+  <div class="block w-full mb-4">
+    <div class="text-3xl font-bold mb-4">📚 Today I Learned</div>
+  </div>
 
   <div class="mb-4 flex flex-col gap-2 md:flex-row md:items-end">
     <div>
@@ -61,16 +63,16 @@
     <a href="/category" class="text-blue-600 hover:underline">Category</a>
   </div>
 
-  <div class="flex w-full">
+  <div class="flex w-full tils">
     {#if tils.length > 0}
       <ul class="space-y-6 mt-4 w-full">
         {#each tils as til}
           <li class="p-4 border rounded-lg shadow bg-white">
             <h2 class="text-xl font-semibold">{til.title}</h2>
             <p class="text-sm text-gray-500">{til.category}</p>
-            <div class="prose prose-sm max-w-none mt-2">
+            <article class="prose prose-slate max-w-none mt-2">
               {@html renderMarkdown(til.content)}
-            </div>
+            </article>
             <p class="text-xs text-gray-400 mt-2">
               {til.created_at &&
                 new Intl.DateTimeFormat("nl-NL", {
@@ -92,3 +94,11 @@
   </div>
 </div>
 
+<style>
+  @reference "../app.css";
+
+  h1 {
+    @apply font-bold size-2;
+  }
+
+</style>
