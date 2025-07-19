@@ -5,14 +5,13 @@ import (
 	"log"
 	"os"
 
-	"github.com/amavis442/til-frontend/config"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func main() {
-	config.LoadEnv()
+	LoadEnv()
 
 	port := fmt.Sprint(os.Getenv("PORT"))
 	if port == "" {

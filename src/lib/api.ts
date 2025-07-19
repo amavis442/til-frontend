@@ -10,13 +10,13 @@ export interface TIL {
 }
 
 export async function getTILs(): Promise<TIL[]> {
-  const res = await fetch(`${base}/tils`);
+  const res = await fetch(`${base}/api/tils`);
   if (!res.ok) throw new Error('Failed to load TILs');
   return res.json();
 }
 
 export async function createTIL(data: TIL): Promise<void> {
-  const res = await fetch(`${base}/tils`, {
+  const res = await fetch(`${base}/api/tils`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
@@ -25,13 +25,13 @@ export async function createTIL(data: TIL): Promise<void> {
 }
 
 export async function getTIL(id: number): Promise<TIL> {
-  const res = await fetch(`${base}/tils/${id}`);
+  const res = await fetch(`${base}/api/tils/${id}`);
   if (!res.ok) throw new Error('Failed to fetch TIL');
   return res.json();
 }
 
 export async function updateTIL(id: number, til: Partial<TIL>): Promise<TIL> {
-  const res = await fetch(`${base}/tils/${id}`, {
+  const res = await fetch(`${base}/api/tils/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(til)
@@ -41,8 +41,19 @@ export async function updateTIL(id: number, til: Partial<TIL>): Promise<TIL> {
 }
 
 export async function searchTILs(params: URLSearchParams) {
-  const res = await fetch(`${base}/tils/search?${params.toString()}`);
+  const res = await fetch(`${base}/api/tils/search?${params.toString()}`);
   if (!res.ok) throw new Error('Failed to load TILs');
   return res.json();
-  return res.json();
+}
+
+export async function post<T>(url: string, data: any): Promise<T> {
+	const res = await fetch(`${base}${url}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(data)
+	});
+	if (!res.ok) throw new Error(await res.text());
+	return res.json();
 }

@@ -57,8 +57,8 @@ export function renderMarkdown(md: string): string {
     breaks: false,
   }) as string;
 
-  console.log("==== Markdown Rendered Output ====");
-  console.log(html);
+  //console.log("==== Markdown Rendered Output ====");
+  //console.log(html);
   return html;
 
 }

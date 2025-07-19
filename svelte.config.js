@@ -1,6 +1,7 @@
 //import adapter from '@sveltejs/adapter-auto';
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import { resolve } from 'path';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -16,10 +17,14 @@ const config = {
 			pages: 'build',
 			assets: 'build',
 			fallback: 'index.html'
-		  }),
-		  paths: {
+		}),
+		paths: {
 			base: ''
-		  }
+		},
+		alias: {
+			'@styles': resolve('./src/styles'),
+			'@components': resolve('./src/components'),
+		}
 	}
 };
 
