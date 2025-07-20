@@ -14,14 +14,22 @@ export const load: PageServerLoad = async ({ locals, fetch, url }) => {
 		throw redirect(303, '/login');
 	}
 
-	const res = await fetch(`${base}/api/tils`);
+	const pageLimit = Number(url.searchParams.get('limit')) || 5;
+    const pageOffset = Number(url.searchParams.get('offset')) || 0;
+	console.log(pageLimit, pageOffset);
+
+	const res = await fetch(`${base}/api/tils?limit=${pageLimit}&offset=${pageOffset}`);
 	if (!res.ok) {
 		throw new Error('Failed to fetch TILs');
 	}
 
-	const tils = await res.json();
+	const data = await res.json();
+	let tils = data.items;
+	let total = data.total;
+	let limit = data.limit;
+	let offset = data.offset;
 
-	return { tils };
+	return { 'tils': tils,'total': total, 'limit': limit, 'offset': offset };
 };
 
 export const actions: Actions = {
@@ -46,5 +54,5 @@ export const actions: Actions = {
 		const tils = await res.json();
 		console.log('Search results are:', tils);
 		return { tils };
-	}
+	},
 } satisfies Actions;

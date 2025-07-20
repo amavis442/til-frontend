@@ -6,14 +6,26 @@
 
   let { data, form }: PageProps = $props();
   let tils: TIL[] = $state([]);
-
-  //let tils: TIL[] = data.tils;
+  let total = $state(0);
+  let limit = $state(5);
+  let offset = $state(0);
+  let pages = $state(0);
+  let currentPage = $state(0);
 
   $effect(() => {
     if (form?.tils) {
       tils = form.tils;
     } else {
       tils = data.tils;
+      total = data.total;
+      limit = data.limit;
+      offset = data.offset;
+      console.log("Total is ", total);
+      pages = Math.ceil(total / limit);
+      console.log("Total pages ", pages);
+
+      currentPage = Math.floor(offset / limit);
+      console.log(currentPage);
     }
   });
 </script>
@@ -36,7 +48,6 @@
           name="title"
           class="border border-gray-300 p-2 rounded w-full"
           placeholder="Search title..."
-          
         />
       </div>
 
@@ -47,7 +58,6 @@
           name="category"
           class="border border-gray-300 p-2 rounded w-full"
           placeholder="Category..."
-          
         />
       </div>
 
@@ -60,10 +70,59 @@
     </form>
   </div>
 
+  {#if pages > 0}
+    <ul class="inline-flex -space-x-px rtl:space-x-reverse items-center">
+      {#each { length: pages }, page}
+        {#if page == 0}
+          <li>
+            <a
+              href="/til?limit={limit}&offset={page * limit}"
+              class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
+            >
+              first</a
+            >
+          </li>
+        {/if}
+        {#if page == currentPage}
+          <li aria-current="page">
+            <a
+              href="/til?limit={limit}&offset={page * limit}"
+              class="flex items-center bold font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
+            >
+              [{page + 1}]</a
+            >
+          </li>
+        {:else}
+          <li>
+            <a
+              href="/til?limit={limit}&offset={page * limit}"
+              class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
+            >
+              {page + 1}</a
+            >
+          </li>
+        {/if}
+
+        {#if page >= pages - 1}
+          <li>
+            <a
+              href="/til?limit={limit}&offset={page * limit}"
+              class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
+            >
+              last</a
+            >
+          </li>
+        {/if}
+      {/each}
+    </ul>
+  {/if}
+
   <div class="flex w-full">
-    <div class="p-2 rounded border-1 mr-2"><a href="/til/new" class="text-blue-600 hover:underline">➕ Add New</a></div>
-     <!--// to be implemented //-->
-     <!-- // 
+    <div class="p-2 rounded border-1 mr-2">
+      <a href="/til/new" class="text-blue-600 hover:underline">➕ Add New</a>
+    </div>
+    <!--// to be implemented //-->
+    <!-- // 
     <div class="p-2 rounded border-1 mr-2"><a href="/til/category" class="text-blue-600 hover:underline">Category</a></div>
     // -->
     <div class="p-2 rounded border-1"><a href="/logout">Logout</a></div>
@@ -88,11 +147,12 @@
                 }).format(new Date(til.created_at))}
             </p>
             <div class="mt-2">
-            <a
-              href={`/til/${til.id}/edit`}
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">✏️ Edit</a
-            >
-          </div>
+              <a
+                href={`/til/${til.id}/edit`}
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                >✏️ Edit</a
+              >
+            </div>
           </li>
         {/each}
       </ul>
