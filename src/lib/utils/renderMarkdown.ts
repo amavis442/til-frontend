@@ -59,6 +59,6 @@ export function renderMarkdown(md: string): string {
 
   //console.log("==== Markdown Rendered Output ====");
   //console.log(html);
-  return html;
+  return DOMPurify.sanitize(html);
 
 }
