@@ -16,7 +16,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		if (refreshToken && typeof refreshToken === 'string' && refreshToken.trim() !== '') {
 			try {
 				// Try to refresh token
-				const res = await fetch(`${base}/api/token/refresh`, {
+				const res = await fetch(`${base}/auth/refresh-token`, {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ refresh_token: refreshToken }),
