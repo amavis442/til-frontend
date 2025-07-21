@@ -72,25 +72,23 @@
 
   {#if pages > 0}
     <ul class="inline-flex -space-x-px rtl:space-x-reverse items-center">
-      {#each { length: pages }, page}
-        {#if page == 0}
-          <li>
-            <a
-              href="/til?limit={limit}&offset={page * limit}"
-              class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
-            >
-              first</a
-            >
-          </li>
-        {/if}
+      <li>
+        <a
+          href="/til?limit={limit}&offset=0"
+          class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
+        >
+          first
+        </a>
+      </li>
+      {#each Array.from({ length: pages }, (_, i) => i) as page}
         {#if page == currentPage}
           <li aria-current="page">
             <a
               href="/til?limit={limit}&offset={page * limit}"
               class="flex items-center bold font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
             >
-              [{page + 1}]</a
-            >
+              [{page + 1}]
+            </a>
           </li>
         {:else}
           <li>
@@ -98,22 +96,19 @@
               href="/til?limit={limit}&offset={page * limit}"
               class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
             >
-              {page + 1}</a
-            >
-          </li>
-        {/if}
-
-        {#if page >= pages - 1}
-          <li>
-            <a
-              href="/til?limit={limit}&offset={page * limit}"
-              class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
-            >
-              last</a
-            >
+              {page + 1}
+            </a>
           </li>
         {/if}
       {/each}
+      <li>
+        <a
+          href="/til?limit={limit}&offset={(pages - 1) * limit}"
+          class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
+        >
+          last
+        </a>
+      </li>
     </ul>
   {/if}
 
