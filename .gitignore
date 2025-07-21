@@ -37,6 +37,9 @@ pnpm-lock.yaml
 # Vite cache
 .vite/
 
+# Qodo AI assistant
+.qodo/
+
 # Editor/OS-specific
 .DS_Store
 *.swp
