@@ -24,7 +24,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 				if (res.ok) {
 					const data = await res.json();
-					token = data.token;
+					
+					if (!isProduction) {
+						console.log("New token after refresh is called: ",data);
+					}
+					token = data.access_token;
 					if (token && token.trim() != "" && verifyTokenRS256(token) != null) {
 
 						// Set the new token in cookies
@@ -40,7 +44,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 					}
 				}
 			} catch (error) {
-				if (process.env.NODE_ENV != "production") {
+				if (!isProduction) {
 					console.error('Failed to refresh token:', error);
 				}
 				clearCookies(event);

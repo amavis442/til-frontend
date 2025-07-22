@@ -34,15 +34,15 @@ export const actions: Actions = {
 			cookies.set('access_token', access_token, {
 				path: '/',
 				httpOnly: true,
-				sameSite: isProduction? 'strict':'lax',
+				sameSite: isProduction ? 'strict' : 'lax',
 				secure: isProduction,
 				maxAge: 60 * 15 // Short lived, 15 mins because we can not revoke it
 			});
-		
+
 			cookies.set('refresh_token', refresh_token, {
 				path: '/',
 				httpOnly: true,
-				sameSite: isProduction? 'strict':'lax',
+				sameSite: isProduction ? 'strict' : 'lax',
 				secure: isProduction,
 				maxAge: 7 * 24 * 60 * 60 // Long lived, can be revoked
 			});
