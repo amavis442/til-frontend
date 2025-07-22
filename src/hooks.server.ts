@@ -1,5 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
-import { getTokenFromCookies, getRefreshTokenFromCookies, setTokenCookie, clearCookies } from '$lib/server/auth/cookies';
+import { getTokenFromCookies, getRefreshTokenFromCookies, setTokenCookie, setRefreshTokenCookie, clearCookies } from '$lib/server/auth/cookies';
 import { verifyTokenRS256, isExpired } from '$lib/server/auth/jwt';
 
 const base = import.meta.env.VITE_BASE_URL;
@@ -8,13 +8,16 @@ const isProduction = process.env.NODE_ENV === "production";
 // Need a test for refresh token in svelte 5
 export const handle: Handle = async ({ event, resolve }) => {
 	let token = getTokenFromCookies(event);
-	const refreshToken = getRefreshTokenFromCookies(event);
+	let refreshToken = getRefreshTokenFromCookies(event);
 
 	if (!token || isExpired(token)) {
 		console.log('Access token missing or expired. Trying to refresh…');
 
 		if (refreshToken && typeof refreshToken === 'string' && refreshToken.trim() !== '') {
 			try {
+				if (!isProduction) {
+					console.log("Refresh token is: ", refreshToken);
+				}
 				// Try to refresh token
 				const res = await fetch(`${base}/auth/refresh-token`, {
 					method: 'POST',
@@ -29,10 +32,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 						console.log("New token after refresh is called: ",data);
 					}
 					token = data.access_token;
+					refreshToken = data.refresh_token;
 					if (token && token.trim() != "" && verifyTokenRS256(token) != null) {
 
 						// Set the new token in cookies
 						setTokenCookie(event, token);
+						setRefreshTokenCookie(event, refreshToken);
 						console.log('Access token refreshed');
 					} else {
 						console.log('Access token is either empty or invalid');

@@ -19,7 +19,18 @@ export function setTokenCookie(event: RequestEvent, newToken?: string | null, co
 
 	event.cookies.set('access_token', newToken, mergedOptions);
 	return true;
+}
 
+export function setRefreshTokenCookie(event: RequestEvent, newToken?: string | null, cookieOptions: CookieSerializeOptions = {}): boolean {
+	if (!newToken) {
+		return false;
+	}
+
+	const defaultOptions: CookieSerializeOptions = { path: '/', httpOnly: true, secure: true, sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 };
+	const mergedOptions = { ...defaultOptions, ...cookieOptions } as CookieSerializeOptions & { path: string };
+
+	event.cookies.set('refresh_token', newToken, mergedOptions);
+	return true;
 }
 
 export function clearCookies(event: RequestEvent, cookieNames: string[] = ['access_token', 'refresh_token'], cookieOptions: CookieSerializeOptions = {}) {
