@@ -1,24 +1,20 @@
 <script lang="ts">
-  let username = "";
-  let password = "";
-  let error = "";
+  import { enhance } from "$app/forms";
+  import type { PageProps, SubmitFunction } from "./$types";
+  import { toast } from '@zerodevx/svelte-toast';
+  let { form }: PageProps = $props();
+  
+  let username = $state("");
+  let password = $state("");
+  let error = $state("");
+
+  $effect(() => {
+    if (form?.error) {
+      toast.push(form.error);
+    }
+  });
+
 </script>
-
-<!-- //
-<form method="POST">
-	<input name="username" bind:value={username} required placeholder="username"/>
-	<input name="password" type="password" bind:value={password} required placeholder="password"/>
-	<button type="submit">Login</button>
-</form>
-
-{#if error}
-	<p style="color: red">{error}</p>
-{/if}
-
-<p>
-	New here? <a href="/register">Register</a>
-</p>
-// -->
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 w-full">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -35,7 +31,10 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form method="POST" class="space-y-6">
+    {#if form?.error}
+		  <p class="error text-red-700">{form.error}</p>
+	  {/if}
+    <form method="POST" class="space-y-6" use:enhance>
       <div>
         <label for="username" class="block text-sm/6 font-medium text-gray-900"
           >Username</label
@@ -58,7 +57,7 @@
             for="password"
             class="block text-sm/6 font-medium text-gray-900">Password</label
           >
-	    </div>
+        </div>
         <div class="mt-2">
           <input
             id="password"
