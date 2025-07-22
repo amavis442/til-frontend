@@ -3,31 +3,23 @@
   import { renderMarkdown } from "$lib/utils/renderMarkdown";
   import { enhance } from "$app/forms";
   import type { PageProps } from "./$types";
+  import Pagination from '$lib/components/pagination.svelte'; // adjust path
 
   let { data, form }: PageProps = $props();
   let tils: TIL[] = $state([]);
-  let total = $state(0);
-  let limit = $state(5);
-  let offset = $state(0);
-  let pages = $state(0);
-  let currentPage = $state(0);
 
   $effect(() => {
     if (form?.tils) {
       tils = form.tils;
     } else {
       tils = data.tils;
-      total = data.total;
-      limit = data.limit;
-      offset = data.offset;
-      console.log("Total is ", total);
-      pages = Math.ceil(total / limit);
-      console.log("Total pages ", pages);
-
-      currentPage = Math.floor(offset / limit);
-      console.log(currentPage);
     }
   });
+
+  // Optional override for link generation
+  const buildLink = (page: number, limit: number) =>
+    `/til?limit=${limit}&offset=${page * limit}`;
+
 </script>
 
 <div class="flex flex-col gap-2 w-1/2">
@@ -70,47 +62,9 @@
     </form>
   </div>
 
-  {#if pages > 0}
-    <ul class="inline-flex -space-x-px rtl:space-x-reverse items-center">
-      <li>
-        <a
-          href="/til?limit={limit}&offset=0"
-          class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
-        >
-          first
-        </a>
-      </li>
-      {#each Array.from({ length: pages }, (_, i) => i) as page}
-        {#if page == currentPage}
-          <li aria-current="page">
-            <a
-              href="/til?limit={limit}&offset={page * limit}"
-              class="flex items-center bold font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
-            >
-              [{page + 1}]
-            </a>
-          </li>
-        {:else}
-          <li>
-            <a
-              href="/til?limit={limit}&offset={page * limit}"
-              class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
-            >
-              {page + 1}
-            </a>
-          </li>
-        {/if}
-      {/each}
-      <li>
-        <a
-          href="/til?limit={limit}&offset={(pages - 1) * limit}"
-          class="flex items-center font-medium h-8 px-3 text-sm text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white border"
-        >
-          last
-        </a>
-      </li>
-    </ul>
-  {/if}
+  <Pagination {data}  linkBuilder={buildLink} />
+
+ 
 
   <div class="flex w-full">
     <div class="p-2 rounded border-1 mr-2">
@@ -133,7 +87,7 @@
             <article class="prose prose-slate max-w-none mt-2">
               {@html renderMarkdown(til.content)}
             </article>
-            <p class="text-xs text-gray-400 mt-2">
+            <p class="text-xs text-gray-400 mt-2 mb-4">
               {til.created_at &&
                 new Intl.DateTimeFormat("nl-NL", {
                   dateStyle: "full",
