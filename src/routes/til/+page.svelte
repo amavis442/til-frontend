@@ -22,7 +22,7 @@
 
 </script>
 
-<div class="flex flex-col gap-2 w-1/2">
+<div class="flex flex-col gap-2 w-full">
   <div class="block w-full mb-4">
     <div class="text-3xl font-bold mb-4">📚 Today I Learned</div>
   </div>
@@ -74,7 +74,6 @@
     <!-- // 
     <div class="p-2 rounded border-1 mr-2"><a href="/til/category" class="text-blue-600 hover:underline">Category</a></div>
     // -->
-    <div class="p-2 rounded border-1"><a href="/logout">Logout</a></div>
   </div>
 
   <div class="flex w-full tils">
