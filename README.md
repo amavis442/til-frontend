@@ -33,3 +33,8 @@ Install [nodejs](https://nodejs.org/en/download) by following the instructions o
 Before building, first get `public.pem` from the backend and copy it to config/jwt/public.pem. Now you can run 
 
 > ./build-frontend.sh
+
+
+On server so it will start on the desired port
+
+> node -r dotenv/config build

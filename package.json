@@ -33,6 +33,7 @@
 		"@tailwindcss/vite": "^4.1.11",
 		"@zerodevx/svelte-toast": "^0.9.6",
 		"dompurify": "^3.2.6",
+		"dotenv": "^17.2.1",
 		"highlight.js": "^11.11.1",
 		"jsdom": "^26.1.0",
 		"jsonwebtoken": "^9.0.2",
