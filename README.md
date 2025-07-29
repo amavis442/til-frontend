@@ -23,3 +23,13 @@ For the backend i use **go**. Frontend is build in **Sveltekit**.
 For database migration i use **go-migrate**, so you will need to download this. Fo easy compiling and migrating i use **make** and **Makefile**.
 
 Maybe i will make a flutter app that can consume the api. Will see.
+
+## Install
+
+Install [nodejs](https://nodejs.org/en/download) by following the instructions on that website. 
+
+> chmod +x build-frontend.sh
+
+Before building, first get `public.pem` from the backend and copy it to config/jwt/public.pem. Now you can run 
+
+> ./build-frontend.sh
