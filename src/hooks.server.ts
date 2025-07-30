@@ -1,4 +1,4 @@
-import type { Handle } from '@sveltejs/kit';
+import type { Handle, HandleFetch } from '@sveltejs/kit';
 import { getTokenFromCookies, getRefreshTokenFromCookies, setTokenCookie, setRefreshTokenCookie, clearCookies } from '$lib/server/auth/cookies';
 import { verifyTokenRS256, isExpired } from '$lib/server/auth/jwt';
 
@@ -9,7 +9,9 @@ const isProduction = process.env.NODE_ENV === "production";
 export const handle: Handle = async ({ event, resolve }) => {
 	let token = getTokenFromCookies(event);
 	let refreshToken = getRefreshTokenFromCookies(event);
-
+	if (!isProduction) {
+		console.log("Hooks:: Token is ",token);
+	}
 	if (!token || isExpired(token)) {
 		console.log('Access token missing or expired. Trying to refresh…');
 
@@ -79,32 +81,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 
-/*
-if (accessToken) {
-		const expired = isExpired(accessToken);
-
-		if (expired && refreshToken) {
-			// Try to refresh the access token
-			const newToken = await refreshAccessToken(refreshToken);
-			if (newToken) {
-				event.cookies.set('access_token', newToken, {
-					httpOnly: true,
-					path: '/',
-					sameSite: 'strict',
-					secure: true,
-					maxAge: 60 * 15
-				});
-				event.locals.user = parseJWT(newToken);
-			} else {
-				// Refresh failed → clear cookies
-				event.cookies.delete('access_token');
-				event.cookies.delete('refresh_token');
-			}
-		} else {
-			// Token exists and is valid
-			event.locals.user = parseJWT(accessToken);
+export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
+	if (request.url.startsWith(`${base}/`)) {
+		let cookie = event.request.headers.get('cookie');
+		if (cookie) {
+			request.headers.set('cookie', cookie);
 		}
 	}
 
-	return resolve(event);
-*/
+	return fetch(request);
+};

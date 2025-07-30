@@ -37,4 +37,6 @@ Before building, first get `public.pem` from the backend and copy it to config/j
 
 On server so it will start on the desired port
 
-> node -r dotenv/config build
+> ORIGIN=http://server:port node --env-file=.env build/index.js
+
+server and port should be the same as you see in the browser else cors will step in and you will end up in a world of pain.
