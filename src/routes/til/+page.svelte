@@ -22,7 +22,8 @@
 
 </script>
 
-<div class="flex flex-col gap-2 w-full">
+
+<div class="flex flex-col items-center w-full gap-2">
   <div class="block w-full mb-4">
     <div class="text-3xl font-bold mb-4">📚 Today I Learned</div>
   </div>
@@ -66,7 +67,7 @@
 
  
 
-  <div class="flex w-full">
+  <div class="flex w-full justify-center">
     <div class="p-2 rounded border-1 mr-2">
       <a href="/til/new" class="text-blue-600 hover:underline">➕ Add New</a>
     </div>
@@ -76,7 +77,7 @@
     // -->
   </div>
 
-  <div class="flex w-full tils">
+  <div class="flex justify-center w-1/2 tils">
     {#if tils.length > 0}
       <ul class="space-y-6 mt-4 w-full">
         {#each tils as til}

@@ -7,22 +7,26 @@ import { fail } from '@sveltejs/kit';
 const base = import.meta.env.VITE_BASE_URL;
 const isProduction = process.env.NODE_ENV === "production";
 
-export const load: PageServerLoad = async ({ locals, fetch, url }) => {
+export const load: PageServerLoad = async ({ cookies, request, locals, fetch, url }) => {
 	if (!isProduction) {
 		console.log(`Base is: ${base}`);
 		console.log('Call to load of /tils has been made and page is being reloaded.');
 	}
 
 	if (!locals.user) {
+		console.log("No locals.user somehow.");
 		throw redirect(303, '/login');
 	}
 
 	const pageLimit = Number(url.searchParams.get('limit')) || 5;
 	const pageOffset = Number(url.searchParams.get('offset')) || 0;
 
-	const res = await fetch(`${base}/api/tils?limit=${pageLimit}&offset=${pageOffset}`);
+	let apiCallUrl = `${base}/api/tils?limit=${pageLimit}&offset=${pageOffset}`;
+	console.log("Call to api is: ", apiCallUrl);
+
+	const res = await fetch(apiCallUrl,{credentials:'include'});
 	if (!res.ok) {
-		throw new Error('Failed to fetch TILs');
+		throw new Error('Failed to fetch TILs. Code '+ res.status + ": " + res.statusText);
 	}
 
 	const data = await res.json();

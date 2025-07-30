@@ -21,7 +21,7 @@
     }
   </script>
   
-  <nav class="flex justify-between items-center bg-gray-900 text-white px-6 py-4">
+  <nav class="flex justify-between items-center bg-gray-900 text-white px-6 py-4 w-full">
     <div class="text-lg font-bold">🔐 TILApp</div>
     <ul class="flex gap-6 items-center">
       <li><a href="/profile" class="hover:underline">Profile</a></li>

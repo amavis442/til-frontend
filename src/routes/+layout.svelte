@@ -14,9 +14,9 @@
   });
 </script>
 
-<div class="min-h-screen flex items-center justify-center bg-gray-50">
+<div class="min-h-screen flex items-start justify-center bg-gray-50">
   <SvelteToast {options} />
-  <div class="flex-col">
+  <div class="flex flex-col w-full">
     <div>
       {#if showNav}
         <Nav />
