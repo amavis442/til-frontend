@@ -57,8 +57,12 @@ export function renderMarkdown(md: string): string {
     breaks: false,
   }) as string;
 
-  //console.log("==== Markdown Rendered Output ====");
-  //console.log(html);
-  return DOMPurify.sanitize(html);
+  
+  // Check if window is available
+  if (typeof window !== 'undefined') {
+    console.log(DOMPurify); 
+    return DOMPurify.sanitize(html);
+  } 
 
+  return html;
 }
