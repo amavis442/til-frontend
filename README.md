@@ -40,3 +40,7 @@ On server so it will start on the desired port
 > ORIGIN=http://server:port node --env-file=.env build/index.js
 
 server and port should be the same as you see in the browser else cors will step in and you will end up in a world of pain.
+
+### Example:
+
+Server runs on `http://192.168.2.60:3000` then make sure in .env file `PORT=3000` and `ORIGIN=http://192.168.2.60:3000` else it will not work.
