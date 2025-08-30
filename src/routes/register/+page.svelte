@@ -1,42 +1,13 @@
 <script lang="ts">
-  import { post } from "$lib/api";
-  import { goto } from "$app/navigation";
+  import { enhance } from "$app/forms";
 
-  let username = "";
-  let email = "";
-  let password = "";
-  let error = "";
+  let username = $state("");
+  let email = $state("");
+  let password = $state("");
+  let error = $state("");
   let success = false;
-
-  async function register() {
-    error = "";
-    try {
-      await post("/auth/register", {
-        username,
-        email,
-        password,
-      });
-      success = true;
-      goto("/login");
-    } catch (err) {
-      error = (err as Error).message;
-    }
-  }
+  
 </script>
-
-<!-- // 
-
-<form on:submit|preventDefault={register}>
-	<input type="email" bind:value={email} placeholder="Email" required />
-	<input type="text" bind:value={username} placeholder="Username" required />
-	<input type="password" bind:value={password} placeholder="Password" required />
-	<button type="submit">Register</button>
-</form>
-
-{#if error}
-	<p style="color: red">{error}</p>
-{/if}
-// -->
 
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 w-full">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -53,7 +24,7 @@
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form method="POST" class="space-y-6" on:submit|preventDefault={register}>
+    <form method="POST" class="space-y-6" use:enhance>
       <div>
         <label for="username" class="block text-sm/6 font-medium text-gray-900"
           >Username</label
