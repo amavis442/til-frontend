@@ -6,7 +6,7 @@ import type { Actions } from './$types';
 const base = import.meta.env.VITE_BASE_URL;
 
 export const actions: Actions = {
-  'change-password': async ({ request, locals }) => {
+  'change-password': async ({ request, fetch, locals }) => {
     const formData = await request.formData();
     const oldPassword = formData.get('oldPassword')?.toString();
     const newPassword = formData.get('newPassword')?.toString();
@@ -26,11 +26,12 @@ export const actions: Actions = {
           'Content-Type': 'application/json'
         },
         credentials: 'include', // Ensures cookies are sent along with the request
-        body: JSON.stringify({ oldPassword, newPassword })
+        body: JSON.stringify({ password: newPassword })
       });
 
 
     if (!response.ok) {
+      console.log(response);
       throw error(response.status, 'Password change failed');
     }
 
