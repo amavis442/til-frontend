@@ -1,9 +1,15 @@
 // src/routes/profile/+page.server.ts
 import { error, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
-
+import type { PageServerLoad } from './$types';
 
 const base = import.meta.env.VITE_BASE_URL;
+
+export const load: PageServerLoad = async ({ locals }) => {
+	if (!locals.user) {
+		throw redirect(303, '/login');
+	}
+};
 
 export const actions: Actions = {
   'change-password': async ({ request, fetch, locals }) => {
